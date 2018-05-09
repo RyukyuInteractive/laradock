@@ -1,3 +1,23 @@
+# Laradock with WordPress
+
+## Introduction
+
+This project aims at using Laradock to easily build WordPress development environment.
+
+## Getting Started
+
+```
+git clone https://github.com/RyukyuInteractive/laradock-with-wordpress.git
+cd laradock-with-wordpress
+cp env-example .env
+docker-compose up -d apache2 mysql workspace phpmyadmin
+docker-compose run --user=laradock workspace bash -c 'cp -a laradock-with-wordpress/_wordpress/{,.e,.g,.h}* ./; composer install'
+```
+
+Note: The files for WordPress is placed in the current directory.
+
+----
+
 <p align="center">
     <img src="https://s19.postimg.org/jblfytw9f/laradock-logo.jpg" alt="Laradock Logo"/>
 </p>
