@@ -1,0 +1,4 @@
+.laradock/
+*.log
+wp-config.php
+vendor/

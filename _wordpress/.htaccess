@@ -1,0 +1,10 @@
+Options -Indexes
+DirectoryIndex index.html index.php
+
+<Files ~ "^\.(htaccess|htpasswd|env)$">
+  deny from all
+</Files>
+
+# BEGIN WordPress
+
+# END WordPress

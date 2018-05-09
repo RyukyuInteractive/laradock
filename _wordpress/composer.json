@@ -1,0 +1,1262 @@
+{
+    "name": "RyukyuInteractive/ladadock-with-wordpress",
+    "require": {
+        "php": ">=5.3.0",
+        "wordpress": "^4.9.5",
+        "vlucas/phpdotenv": "^2.4",
+        "monolog/monolog": "^1.23.0",
+        "wpackagist-plugin/akismet": "^4.0.3",
+        "wpackagist-plugin/wp-multibyte-patch": "^2.8.1"
+    },
+    "require-dev": {
+        "wp-cli/wp-cli": "^1.5.1"
+    },
+    "extra": {
+        "installer-paths": {
+            "content/plugins/{$name}/": [
+                "type:wordpress-plugin",
+                "type:wordpress-muplugin"
+            ]
+        }
+    },
+    "scripts": {
+        "update-repositories-for-wordpress": [
+            "@php -r \"\\$c=json_decode(file_get_contents('composer.json'),true);\\$t=json_decode(file_get_contents('https://api.github.com/repos/WordPress/WordPress/tags?per_page=100',false,stream_context_create(['http'=>['ignore_errors'=>true,'header'=>'User-Agent: wp-composer-template']])),true);\\$c['repositories']=array_merge(array_filter(isset(\\$c['repositories'])?\\$c['repositories']:array(),function(\\$r){return !(isset(\\$r['type'])&&\\$r['type']=='package'&&isset(\\$r['package'])&&isset(\\$r['package']['name'])&&\\$r['package']['name']=='wordpress');}),array(array('type'=>'package','package'=>array('name'=>'wordpress','version'=>'dev-master','source'=>array('type'=>'git','url'=>'https://github.com/WordPress/WordPress.git','reference'=>'master')))),array_map(function(\\$t){return array('type'=>'package','package'=>array('name'=>'wordpress','version'=>\\$t['name'],'source'=>array('type'=>'git','url'=>'https://github.com/WordPress/WordPress.git','reference'=>\\$t['name'])));},array_merge(array_filter(\\$t,function(\\$t){return preg_match('#\\\\A\\\\d+(\\\\.\\\\d+)*\\\\z#',\\$t['name']);}))));file_put_contents('composer.json',json_encode(\\$c,JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));\""
+        ],
+        "create-wp-config": [
+            "@php -r \"\\$v=exec('composer config vendor-dir');file_exists(\\$v.DIRECTORY_SEPARATOR.'wp-config.php') || file_put_contents(\\$v.DIRECTORY_SEPARATOR.'wp-config.php', '<?php '.\\\"\\\\n\\\".'define(\\'ABSPATH\\',__DIR__.\\'/wordpress/\\');require(__DIR__.\\''.str_repeat('/..',count(explode(DIRECTORY_SEPARATOR,\\$v))).'/wp-config.php\\');');\"",
+            "@php -r \"\\$v=exec('composer config vendor-dir');file_exists('wp-config.php') || (! file_exists(\\$c=\\$v.DIRECTORY_SEPARATOR.'wordpress'.DIRECTORY_SEPARATOR.'wp-config-sample.php')) || copy(\\$c, 'wp-config.php');\"",
+            "@php -r \"\\$code=file_get_contents('wp-config.php');strpos(\\$code,'/vendor/autoload.php')||file_put_contents('wp-config.php','<?php require_once __DIR__.\\'/vendor/autoload.php\\';\\$dotenv=new \\\\Dotenv\\\\Dotenv(__DIR__);\\$dotenv->load();define(\\'WP_SITEURL\\',getenv(\\'WP_SITEURL\\'));define(\\'WP_HOME\\',getenv(\\'WP_HOME\\'));define(\\'WP_CONTENT_DIR\\',ABSPATH.getenv(\\'WP_CONTENT_DIR\\'));define(\\'WP_CONTENT_URL\\',getenv(\\'WP_CONTENT_URL\\'));'.str_replace(['\\'database_name_here\\'','\\'username_here\\'','\\'password_here\\'','\\'localhost\\''],['getenv(\\'DB_NAME\\')','getenv(\\'DB_USER\\')','getenv(\\'DB_PASSWORD\\')','getenv(\\'DB_HOST\\')'],ltrim(\\$code,'<?php')));\""
+        ],
+        "pre-install-cmd": [
+            "@update-repositories-for-wordpress"
+        ],
+        "post-install-cmd": [
+            "@create-wp-config"
+        ],
+        "pre-update-cmd": [
+            "@update-repositories-for-wordpress"
+        ],
+        "post-update-cmd": [
+            "@create-wp-config"
+        ]
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://wpackagist.org"
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "dev-master",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "master"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.9.5",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.9.5"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.9.4",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.9.4"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.9.3",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.9.3"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.9.2",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.9.2"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.9.1",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.9.1"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.9",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.9"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.8.6",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.8.6"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.8.5",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.8.5"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.8.4",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.8.4"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.8.3",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.8.3"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.8.2",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.8.2"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.8.1",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.8.1"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.8",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.8"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.7.10",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.7.10"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.7.9",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.7.9"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.7.8",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.7.8"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.7.7",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.7.7"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.7.6",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.7.6"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.7.5",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.7.5"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.7.4",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.7.4"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.7.3",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.7.3"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.7.2",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.7.2"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.7.1",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.7.1"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.7",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.7"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.6.11",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.6.11"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.6.10",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.6.10"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.6.9",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.6.9"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.6.8",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.6.8"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.6.7",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.6.7"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.6.6",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.6.6"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.6.5",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.6.5"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.6.4",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.6.4"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.6.3",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.6.3"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.6.2",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.6.2"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.6.1",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.6.1"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.6",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.6"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.5.14",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.5.14"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.5.13",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.5.13"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.5.12",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.5.12"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.5.11",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.5.11"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.5.10",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.5.10"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.5.9",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.5.9"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.5.8",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.5.8"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.5.7",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.5.7"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.5.6",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.5.6"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.5.5",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.5.5"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.5.4",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.5.4"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.5.3",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.5.3"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.5.2",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.5.2"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.5.1",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.5.1"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.5",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.5"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.4.15",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.4.15"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.4.14",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.4.14"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.4.13",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.4.13"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.4.12",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.4.12"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.4.11",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.4.11"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.4.10",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.4.10"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.4.9",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.4.9"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.4.8",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.4.8"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.4.7",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.4.7"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.4.6",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.4.6"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.4.5",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.4.5"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.4.4",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.4.4"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.4.3",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.4.3"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.4.2",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.4.2"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.4.1",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.4.1"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.4",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.4"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.3.16",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.3.16"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.3.15",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.3.15"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.3.14",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.3.14"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.3.13",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.3.13"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.3.12",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.3.12"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.3.11",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.3.11"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.3.10",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.3.10"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.3.9",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.3.9"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.3.8",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.3.8"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.3.7",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.3.7"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.3.6",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.3.6"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.3.5",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.3.5"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.3.4",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.3.4"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.3.3",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.3.3"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.3.2",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.3.2"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.3.1",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.3.1"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.3",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.3"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.2.20",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.2.20"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.2.19",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.2.19"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.2.18",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.2.18"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.2.17",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.2.17"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.2.16",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.2.16"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.2.15",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.2.15"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.2.14",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.2.14"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.2.13",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.2.13"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.2.12",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.2.12"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.2.11",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.2.11"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.2.10",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.2.10"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.2.9",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.2.9"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.2.8",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.2.8"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.2.7",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.2.7"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.2.6",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.2.6"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "wordpress",
+                "version": "4.2.5",
+                "source": {
+                    "type": "git",
+                    "url": "https://github.com/WordPress/WordPress.git",
+                    "reference": "4.2.5"
+                }
+            }
+        }
+    ]
+}
