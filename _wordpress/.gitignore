@@ -2,3 +2,4 @@
 *.log
 wp-config.php
 vendor/
+plugins/
