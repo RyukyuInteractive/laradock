@@ -16,6 +16,8 @@ docker-compose run --user=laradock workspace bash -c 'cp -a laradock-with-wordpr
 
 Note: The files for WordPress is placed in the current directory.
 
+Please see at the [Guide page](https://github.com/RyukyuInteractive/laradock-with-wordpress/wiki/Guide) for better use.
+
 ----
 
 <p align="center">
